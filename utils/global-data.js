@@ -4,7 +4,7 @@ export const getGlobalData = () => {
     : 'JUNGLELABᵀᴹ';
   const blogTitle = process.env.BLOG_TITLE
     ? decodeURI(process.env.BLOG_TITLE)
-    : 'Eco System';
+    : 'Eco System made with ❤️';
   const footerText = process.env.BLOG_FOOTER_TEXT
     ? decodeURI(process.env.BLOG_FOOTER_TEXT)
     : 'JUNGLELABᵀᴹ.';
