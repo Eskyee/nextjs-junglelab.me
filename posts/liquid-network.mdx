@@ -1,0 +1,123 @@
+---
+title: Developers - Get Started.
+description: "Languages."
+date: Sept 4 2022
+---
+
+
+JavaScript 57.8%
+Svelte 31.4% PLpgSQL 5.9%
+EJS 4.2% CSS 0.3%
+Shell 0.3% Other 0.1%
+
+Quick Start with JUNGLELABᵀᴹ
+
+JungleLab LNFT Digital Assets is a web-based platform for issuing and transacting with non-fungible tokens on the Bitcoin Liquid Network. 
+Blockstream is sponsoring its development and hosting an exemplary curated instance of it for use by Bitcoin artists at JungleLab.
+
+Features
+
+JUNGLELABᵀᴹ 
+User accounts and profiles for artists and collectors include custom avatars, contact info and biography
+Users can follow other artists and collectors and like/favorite individual artworks
+
+Artists can upload digital media files (jpg, png, gif, mp4) representing an artwork and add metadata like a title, description, and tags
+Selected metadata is published in the liquid asset registry so that tokens can be recognized by external wallets
+
+Media files are added to the IPFS network upon being uploaded and are given a unique content identifier (CID) derived from the SHA256 hash of the file
+The CID is embedded in the Liquid token issuance transaction contract, permanently and provably linking the file to the token
+Artworks are listed in a searchable/sortable/filterable marketplace gallery
+
+Artists can list an artwork for sale by setting an optional listing price, royalty rate, and/or auction period
+Bids and sales are conducted peer-to-peer using atomic swaps so the platform host does not need to escrow funds
+Listings, bids, transfers and new artwork activity are logged and presented in a site-wide feed
+
+A web-based liquid wallet is integrated into the user's profile page and allows them to fund their accounts with L-BTC or any kind of liquid asset
+Wallets can be backed up and imported using a 12-word BIP mnemonic seed phrase
+
+Built-in integration with the coinos.io API allows users to instantly convert BTC to L-BTC by depositing to an on-chain address or paying a lightning network invoice
+Royalties and auction holding periods are enforced through a 2-of-2 signing server that only signs off on transactions that meet certain conditions
+
+Tech Stack Summary
+
+Front-end
+
+Svelte Kit reactive component framework -
+Tailwind CSS UI utility classes -
+LiquidJS for liquid wallet functionality
+
+Back-end
+
+Postgres/Hasura for storing relational app data - 
+Hasura backend plus for JWT-based user auth -
+IPFS for media storage and hash-based content addressing -
+Fastify NodeJS api/app server
+
+3rd-party APIs
+
+Esplora for Liquid blockchain data -
+Liquid asset registry for token metadata -
+coinos BTC/LNBTC - L-BTC conversion -
+
+Installation pre-requisites
+pnpm [pnpm](https://pnpm.io)
+Docker [docker](https://www.docker.com)
+Hasura CLI [hasura](https://hasura.io)
+
+Setup local development environment
+
+```jsx
+pnpm install
+cd hasura
+cp .env.sample .env
+docker run -it -v $PWD/app:/app --entrypoint pnpm asoltys/lnft-server install
+docker-compose up -d
+hasura migrate apply
+hasura metadata apply
+hasura seeds apply
+hasura metadata reload
+docker exec -it ipfs ipfs config --json Gateway.PublicGateways '{ "ipfs": { "Paths": ["/ipfs", "/ipns"], "UseSubdomains": false } }'
+docker exec -it ipfs ipfs config Addresses.Gateway "/ip4/0.0.0.0/tcp/8080"
+sudo cp ../static/user.png storage/QmcbyjMMT5fFtoiWRJiwV8xoiRWJpSRwC6qCFMqp7EXD4Z
+docker exec -it ipfs ipfs add /export/QmcbyjMMT5fFtoiWRJiwV8xoiRWJpSRwC6qCFMqp7EXD4Z
+docker exec -it liquid elements-cli createwallet coinos
+docker exec -it liquid elements-cli rescanblockchain
+docker restart lapp
+cd ..
+pnpm dev   # site is available at http://localhost:3000/
+chmod +x mine.sh
+./mine.sh   # this script will run continually to mine regtest blocks, you may want to run it in a separate terminal window or tab
+docker exec -it liquid elements-cli -datadir=/home/elements/.elements sendtoaddress <address> 1   # get <address> from http://localhost:3000/wallet
+```
+
+
+Setup local development with cloud tools - VS CodeSpaces 
+
+```jsx
+npm i -g pnpm
+ pnpm install
+cd hasura
+cp .env.sample .env
+docker run -it -v $PWD/app:/app --entrypoint pnpm asoltys/lnft-server install
+docker-compose up -d
+hasura migrate apply
+hasura metadata apply
+hasura seeds apply
+hasura metadata reload
+docker exec -it ipfs ipfs config --json Gateway.PublicGateways '{ "ipfs": { "Paths": ["/ipfs", "/ipns"], "UseSubdomains": false } }'
+docker exec -it ipfs ipfs config Addresses.Gateway "/ip4/0.0.0.0/tcp/8080"
+sudo cp ../static/user.png storage/QmcbyjMMT5fFtoiWRJiwV8xoiRWJpSRwC6qCFMqp7EXD4Z
+docker exec -it ipfs ipfs add /export/QmcbyjMMT5fFtoiWRJiwV8xoiRWJpSRwC6qCFMqp7EXD4Z
+docker exec -it liquid elements-cli createwallet coinos
+docker exec -it liquid elements-cli rescanblockchain
+docker restart lapp
+cd ..
+pnpm dev   # site is available at http://localhost:3000/
+chmod +x mine.sh
+
+docker exec -it liquid elements-cli -datadir=/home/elements/.elements sendtoaddress <address> 1   # get <address> from http://localhost:3000/wallet
+./mine.sh   # this script will run continually to mine regtest blocks, you may want to run it in a separate terminal window or tab"
+```
+[VS Code Dev](https://vscode.dev/)
+
+Go back [home](/).
